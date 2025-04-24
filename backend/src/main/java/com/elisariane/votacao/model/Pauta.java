@@ -1,23 +1,21 @@
 package com.elisariane.votacao.model;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Pauta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Parameter(description = "ID da pauta")
     private Long id;
 
-    @Parameter(description = "Título da pauta a ser votada")
+    @NotBlank
     private String titulo;
 
-    @Parameter(description = "Descrição da pauta a ser votada")
     private String descricao;
 
     public Pauta() {
