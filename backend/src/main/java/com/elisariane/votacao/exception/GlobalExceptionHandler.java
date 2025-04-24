@@ -1,5 +1,6 @@
 package com.elisariane.votacao.exception;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.elisariane.votacao")
 public class GlobalExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -47,10 +48,32 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.CONFLICT, "Conflito de sessão", request.getRequestURI(), List.of(msg));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorResponse> handleIllegalArgument(IllegalArgumentException ex,
+                                                                  HttpServletRequest request) {
+        LOGGER.warn("Erro de negócio em {}: {}", request.getRequestURI(), ex.getMessage());
+
+        ApiErrorResponse resposta = new ApiErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Requisição inválida",
+                request.getRequestURI(),
+                List.of(ex.getMessage())
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleEntityNotFound(EntityNotFoundException ex,
+                                                                 HttpServletRequest request) {
+        LOGGER.warn("Entidade não encontrada em {}: {}", request.getRequestURI(), ex.getMessage());
+        return buildErrorResponse(HttpStatus.NOT_FOUND, "Entidade não encontrada", request.getRequestURI(), List.of(ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex,
                                                           HttpServletRequest request) {
-        LOGGER.error("Erro interno em " + request.getRequestURI(), ex);
+        LOGGER.error("Erro interno em {}", request.getRequestURI(), ex);
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno", request.getRequestURI(), List.of(ex.getMessage()));
     }
 
