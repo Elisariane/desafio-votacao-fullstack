@@ -1,15 +1,22 @@
+version: "3.8"
+
 services:
-  postgres-votacao:
+  postgres:
     image: postgres:16
     container_name: postgres-votacao
+    ports:
+      - "5433:5432"
     environment:
+      POSTGRES_DB: votacao_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: votacao_db
-    ports:
-      - "5432:5432"
     volumes:
-      - votacao_pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
 
 volumes:
-  votacao_pgdata:
+  postgres_data:
