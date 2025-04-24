@@ -2,32 +2,30 @@ package com.elisariane.votacao.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiErrorResponse> handleValidation(MethodArgumentNotValidException ex,
-                                                             HttpServletRequest request) {
+    public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                         HttpServletRequest request) {
         List<String> erros = ex.getBindingResult().getFieldErrors().stream()
                 .map(e -> e.getField() + ": " + e.getDefaultMessage())
                 .toList();
 
-        ApiErrorResponse resposta = new ApiErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                "Erro de validação",
-                request.getRequestURI(),
-                erros
-        );
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
+        LOGGER.warn("Validação falhou em {}: {}", request.getRequestURI(), erros);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Erro de validação", request.getRequestURI(), erros);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -37,26 +35,33 @@ public class GlobalExceptionHandler {
                 .map(v -> v.getPropertyPath() + ": " + v.getMessage())
                 .toList();
 
-        ApiErrorResponse resposta = new ApiErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                "Violação de restrição",
-                request.getRequestURI(),
-                erros
-        );
+        LOGGER.warn("ConstraintViolation em {}: {}", request.getRequestURI(), erros);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Violação de restrição", request.getRequestURI(), erros);
+    }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
+    @ExceptionHandler(PautaJaPossuiSessaoAbertaException.class)
+    public ResponseEntity<ApiErrorResponse> handleSessaoJaAberta(PautaJaPossuiSessaoAbertaException ex,
+                                                                 HttpServletRequest request) {
+        String msg = ex.getMessage();
+        LOGGER.info("Conflito de sessão para {}: {}", request.getRequestURI(), msg);
+        return buildErrorResponse(HttpStatus.CONFLICT, "Conflito de sessão", request.getRequestURI(), List.of(msg));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex,
                                                           HttpServletRequest request) {
-        ApiErrorResponse resposta = new ApiErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Erro interno",
-                request.getRequestURI(),
-                List.of(ex.getMessage())
-        );
+        LOGGER.error("Erro interno em " + request.getRequestURI(), ex);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno", request.getRequestURI(), List.of(ex.getMessage()));
+    }
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resposta);
+    private ResponseEntity<ApiErrorResponse> buildErrorResponse(HttpStatus status, String erro,
+                                                                String path, List<String> mensagens) {
+        ApiErrorResponse resposta = new ApiErrorResponse(
+                status.value(),
+                erro,
+                path,
+                mensagens
+        );
+        return ResponseEntity.status(status).body(resposta);
     }
 }

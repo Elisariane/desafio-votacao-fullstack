@@ -20,6 +20,9 @@ public class Pauta {
     @Parameter(description = "Descrição da pauta a ser votada")
     private String descricao;
 
+    public Pauta() {
+    }
+
     public Pauta(String titulo, String descricao) {
         this.titulo = titulo;
         this.descricao = descricao;

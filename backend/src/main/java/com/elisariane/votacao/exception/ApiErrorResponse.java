@@ -1,14 +1,26 @@
 package com.elisariane.votacao.exception;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Schema(description = "Resposta de erro da API")
 public class ApiErrorResponse {
 
+    @Schema(description = "Timestamp do erro", example = "2025-04-24T17:02:00Z")
     private LocalDateTime timestamp;
+
+    @Schema(description = "Código HTTP", example = "400")
     private int status;
+
+    @Schema(description = "Tipo do erro", example = "Erro de validação")
     private String error;
+
+    @Schema(description = "Rota da url onde ocorreu a requisição", example = "/v1/pauta")
     private String path;
+
+    @Schema(description = "Lista de mensagens detalhadas")
     private List<String> mensagens;
 
     public ApiErrorResponse() {}

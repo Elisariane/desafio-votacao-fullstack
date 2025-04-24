@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,8 +28,8 @@ public class PautaController {
         this.pautaService = pautaService;
     }
 
-    @Operation(summary = "Cria uma nova pauta", description = "Cria uma pauta a ser votada")
-    @ApiResponses(value = {
+    @Operation(summary = "Cria uma nova pauta", description = "Cria uma pauta a ser votada",
+    responses = {
             @ApiResponse(responseCode = "201", description = "Pauta criada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Erro de validação",
                     content = @Content(mediaType = "application/json",
@@ -44,4 +43,5 @@ public class PautaController {
         Pauta novaPauta = pautaService.criar(pautaDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(novaPauta);
     }
+
 }

@@ -3,6 +3,7 @@ package com.elisariane.votacao.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+@Schema(name = "PautaDto", description = "DTO para criar uma nova pauta para votação")
 public record PautaDto(
 
         @NotBlank(message = "Por favor defina um título para a pauta")
