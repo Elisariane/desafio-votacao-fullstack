@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Pauta {
@@ -15,7 +14,6 @@ public class Pauta {
     @Parameter(description = "ID da pauta")
     private Long id;
 
-    @NotBlank(message = "Por favor defina um título para a pauta")
     @Parameter(description = "Título da pauta a ser votada")
     private String titulo;
 
