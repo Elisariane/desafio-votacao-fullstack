@@ -18,7 +18,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 class SessaoVotacaoServiceTest {
@@ -43,7 +42,7 @@ class SessaoVotacaoServiceTest {
         pauta.setId(1L);
 
         when(pautaRepository.findById(1L)).thenReturn(Optional.of(pauta));
-        when(sessaoVotacaoRepository.existsByPautaAndFimAfter(eq(pauta), any())).thenReturn(false);
+        when(sessaoVotacaoRepository.existsActiveSessionByPauta(pauta)).thenReturn(false);
         when(sessaoVotacaoRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
         SessaoVotacaoDto dto = new SessaoVotacaoDto(1L, null, null);
@@ -63,7 +62,7 @@ class SessaoVotacaoServiceTest {
         LocalDateTime fim = inicio.plusMinutes(10);
 
         when(pautaRepository.findById(2L)).thenReturn(Optional.of(pauta));
-        when(sessaoVotacaoRepository.existsByPautaAndFimAfter(eq(pauta), any())).thenReturn(false);
+        when(sessaoVotacaoRepository.existsActiveSessionByPauta(pauta)).thenReturn(false);
         when(sessaoVotacaoRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
         SessaoVotacaoDto dto = new SessaoVotacaoDto(2L, inicio, fim);
@@ -88,7 +87,7 @@ class SessaoVotacaoServiceTest {
         pauta.setId(3L);
 
         when(pautaRepository.findById(3L)).thenReturn(Optional.of(pauta));
-        when(sessaoVotacaoRepository.existsByPautaAndFimAfter(eq(pauta), any())).thenReturn(true);
+        when(sessaoVotacaoRepository.existsActiveSessionByPauta(pauta)).thenReturn(true);
 
         SessaoVotacaoDto dto = new SessaoVotacaoDto(3L, null, null);
 

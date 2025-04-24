@@ -19,7 +19,6 @@ import java.util.Optional;
 public class SessaoVotacaoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SessaoVotacaoService.class);
-    public static final LocalDateTime LOCAL_DATE_TIME_NOW = LocalDateTime.now();
     private final PautaRepository pautaRepository;
     private final SessaoVotacaoRepository sessaoVotacaoRepository;
 
@@ -38,7 +37,7 @@ public class SessaoVotacaoService {
                     return new EntityNotFoundException("Pauta não encontrada");
                 });
 
-        boolean existeSessaoAberta = sessaoVotacaoRepository.existsByPautaAndFimAfter(pauta, LOCAL_DATE_TIME_NOW);
+        boolean existeSessaoAberta = sessaoVotacaoRepository.existsActiveSessionByPauta(pauta);
 
         if (existeSessaoAberta) {
             LOGGER.warn("Já existe uma sessão ativa para a pauta {}", pauta.getId());
@@ -47,7 +46,7 @@ public class SessaoVotacaoService {
 
         LOGGER.info("Iniciando abertura de sessão para pauta ID {}", dto.pautaId());
 
-        LocalDateTime inicio = dto.inicio() != null ? dto.inicio() : LOCAL_DATE_TIME_NOW;
+        LocalDateTime inicio = dto.inicio() != null ? dto.inicio() : LocalDateTime.now().minusSeconds(1);
         LocalDateTime fim    = dto.fim()    != null ? dto.fim() : inicio.plusMinutes(1);
 
         SessaoVotacao sessao = new SessaoVotacao(pauta, inicio, fim);
