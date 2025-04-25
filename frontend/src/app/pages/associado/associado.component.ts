@@ -63,10 +63,11 @@ export class AssociadoComponent implements OnInit {
     this.associadoService.criar(novoAssociado).subscribe({
       next: (res) => {
         this.associados.push(res);
-        this.showAlert('Associado criado com sucesso!', 'success', 3000);
         this.fecharModal();
+        this.showAlert('Associado criado com sucesso!', 'success', 3000);
       },
       error: (erro) => {
+        this.fecharModal();
         const mensagens = erro?.error?.mensagens || ['Erro ao salvar associado'];
         this.showAlert(mensagens.join('\n'), 'danger', 5000);
       }
