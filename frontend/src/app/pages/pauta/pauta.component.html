@@ -1,3 +1,10 @@
+<app-alert
+    [message]="alertMessage"
+    [type]="alertType"
+    [duration]="3000">
+</app-alert>
+
+
 <div class="container mt-5">
     <h2 class="text-center mb-4">Pautas de Votação</h2>
 
@@ -24,7 +31,7 @@
                 <h5 class="card-title">{{ pauta.titulo }}</h5>
             </div>
             <div class="card-body">
-                <p class="card-text">{{ pauta.descricao }}</p>
+                <p class="card-text">{{ pauta.descricao || "Sem descrição"}}</p>
             </div>
             </div>
         </div>
@@ -44,7 +51,18 @@
             <form (ngSubmit)="salvarPauta()">
             <div class="mb-3">
                 <label class="form-label">Título</label>
-                <input class="form-control" [(ngModel)]="novoTitulo" name="titulo" required />
+                <input 
+                    class="form-control"
+                    [(ngModel)]="novoTitulo"
+                    name="titulo"
+                    required
+                    [(ngModel)]="novoTitulo"
+                    #titulo="ngModel"
+                    [ngClass]="{ 'is-invalid': titulo.invalid && titulo.touched }"
+                />
+                <div class="invalid-feedback">
+                    Título é obrigatório.
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Descrição</label>

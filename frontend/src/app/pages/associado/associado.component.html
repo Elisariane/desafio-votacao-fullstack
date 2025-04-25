@@ -1,1 +1,101 @@
-<p>associado works!</p>
+<app-alert
+    [message]="alertMessage"
+    [type]="alertType"
+    [duration]="3000">
+</app-alert>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Associados Cadastrados</h2>
+
+    <!-- Quando a lista estiver vazia -->
+    <div *ngIf="associados.length === 0" class="d-flex flex-column align-items-center justify-content-center" style="min-height: 40vh;">
+        <div class="card text-center p-4 shadow-sm" style="max-width: 500px;">
+            <p class="mb-3 fs-5 text-muted">
+                Nenhum associado cadastrado ainda 😕<br>
+                Cadastre agora mesmo!
+            </p>
+            <button class="btn btn-primary" (click)="criarAssociado()">Cadastrar Associado</button>
+        </div>
+    </div>
+
+    <!-- Quando houver associados -->
+    <div *ngIf="associados.length > 0">
+        <div class="row mb-3">
+            <div class="col-md-12 text-end">
+                <button class="btn btn-primary" (click)="criarAssociado()">Cadastrar Associado</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" *ngFor="let associado of associados">
+                <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">{{ associado.nome }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>CPF:</strong> {{ associado.cpf | cpfFormat }}</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showModal" class="modal d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Novo Associado</h5>
+            <button type="button" class="btn-close" (click)="fecharModal()"></button>
+        </div>
+        <div class="modal-body">
+            <form #formAssociado="ngForm" (ngSubmit)="salvarAssociado(formAssociado)" novalidate>
+                <div class="mb-3">
+                    <label class="form-label">Nome</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="nome"
+                        required
+                        [(ngModel)]="novoNome"
+                        #nome="ngModel"
+                        [ngClass]="{ 'is-invalid': nome.invalid && nome.touched }"
+                    />
+                    <div class="invalid-feedback">
+                        Nome é obrigatório.
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">CPF</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="cpf"
+                        required
+                        minlength="11"
+                        maxlength="11"
+                        [(ngModel)]="novoCpf"
+                        #cpf="ngModel"
+                        [ngClass]="{ 'is-invalid': cpf.invalid && cpf.touched }"
+                    />
+                    <div class="invalid-feedback">
+                        CPF deve conter 11 dígitos numéricos válidos.
+                    </div>
+                    <div class="text-danger mt-1" *ngIf="cpf.valid && !isCpfValido(novoCpf)">
+                        CPF inválido.
+                    </div>
+                </div>
+                
+                <button
+                    type="submit"
+                    class="btn btn-success"
+                    [disabled]="!formAssociado.form.valid || !isCpfValido(novoCpf)">
+                    Salvar
+                </button>
+            </form>          
+        </div>
+        </div>
+    </div>
+</div>
