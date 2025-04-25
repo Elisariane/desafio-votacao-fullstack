@@ -59,7 +59,7 @@ public class SessaoVotacaoController {
                     schema = @Schema(implementation = SessaoVotacao.class)))
     @GetMapping
     public ResponseEntity<List<SessaoVotacao>> listarTodas() {
-        List<SessaoVotacao> lista = service.listarTodas();  // implemente este método no service
+        List<SessaoVotacao> lista = service.listarTodas();
         return ResponseEntity.ok(lista);
     }
 

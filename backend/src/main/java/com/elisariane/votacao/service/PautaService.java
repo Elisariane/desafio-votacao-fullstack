@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PautaService {
 
@@ -27,5 +29,10 @@ public class PautaService {
         LOGGER.info("Nova Pauta: {}, criada com sucesso!", novaPauta.getTitulo());
 
         return novaPauta;
+    }
+
+    public List<Pauta> listarTodas() {
+        LOGGER.info("Buscando todas as pautas...");
+        return pautaRepository.findAll();
     }
 }
