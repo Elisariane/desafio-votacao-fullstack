@@ -1,0 +1,58 @@
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Pautas de Votação</h2>
+
+    <!-- Quando a lista estiver vazia -->
+    <div *ngIf="pautas.length === 0" class="d-flex flex-column align-items-center justify-content-center" style="min-height: 40vh;">
+        <div class="card text-center p-4 shadow-sm" style="max-width: 500px;">
+        <p class="mb-3 fs-5 text-muted">Ainda sem pautas a serem votadas 😔<br>Vamos mudar isso? Crie agora mesmo!</p>
+        <button class="btn btn-primary" (click)="criarPauta()">Criar Nova Pauta</button>
+        </div>
+    </div>
+
+    <!-- Quando houver pautas -->
+    <div *ngIf="pautas.length > 0">
+        <div class="row mb-3">
+        <div class="col-md-12 text-end">
+            <button class="btn btn-primary" (click)="criarPauta()">Criar Pauta</button>
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="col-md-4" *ngFor="let pauta of pautas">
+            <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">{{ pauta.titulo }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ pauta.descricao }}</p>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Criação -->
+<div *ngIf="showModal" class="modal d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Nova Pauta</h5>
+        <button type="button" class="btn-close" (click)="fecharModal()"></button>
+    </div>
+    <div class="modal-body">
+            <form (ngSubmit)="salvarPauta()">
+            <div class="mb-3">
+                <label class="form-label">Título</label>
+                <input class="form-control" [(ngModel)]="novoTitulo" name="titulo" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Descrição</label>
+                <textarea class="form-control" [(ngModel)]="novaDescricao" name="descricao"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success" [disabled]="!novoTitulo.trim()">Salvar</button>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>

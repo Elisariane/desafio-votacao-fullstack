@@ -1,0 +1,7 @@
+.modal {
+    transition: opacity 0.2s ease;
+}
+
+.modal-backdrop {
+    transition: opacity 0.2s ease;
+}
