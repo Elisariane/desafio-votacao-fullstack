@@ -83,7 +83,6 @@ export class AssociadoComponent implements OnInit {
   isCpfValido(cpf: string): boolean {
     if (!cpf) return false;
   
-    // Remove tudo que não for número
     cpf = cpf.replace(/\D/g, '');
   
     if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;

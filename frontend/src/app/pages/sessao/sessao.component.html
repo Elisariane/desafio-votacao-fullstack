@@ -1,1 +1,101 @@
-<p>sessao works!</p>
+<app-alert [message]="alertMessage" [type]="alertType" [duration]="3000"></app-alert>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Sessões de Votação</h2>
+
+    <div *ngIf="sessoes.length === 0" class="d-flex flex-column align-items-center justify-content-center" style="min-height: 40vh;">
+        <div class="card text-center p-4 shadow-sm" style="max-width: 500px;">
+        <p class="mb-3 fs-5 text-muted">
+            Ainda não há sessões abertas 😕<br />
+            Que tal abrir uma agora?
+        </p>
+        <button class="btn btn-primary" (click)="criarSessao()">Abrir Sessão</button>
+        </div>
+    </div>
+
+  <div *ngIf="sessoes.length > 0">
+    <div class="text-end mb-3">
+        <button class="btn btn-primary" (click)="criarSessao()">Abrir Sessão</button>
+    </div>
+
+        <!-- Sessões Ativas -->
+    <div *ngIf="sessoesAtivas.length > 0">
+        <h3 class="mt-4">Sessões Ativas</h3>
+        <div class="row">
+        <div class="col-md-4" *ngFor="let s of sessoesAtivas">
+            <div class="card mb-4">
+            <div class="card-header">
+                <strong>Pauta:</strong> {{ s.pauta?.titulo }}
+            </div>
+            <div class="card-body">
+                <p><strong>Início:</strong> {{ formatarData(s.inicio) }}</p>
+                <p><strong>Fim:</strong> {{ formatarData(s.fim) }}</p>
+                <p><strong>Status:</strong> 
+                    <span [class]="s.ativa ? 'text-success fw-bold' : 'text-danger'">
+                        {{ s.ativa ? 'Ativa' : 'Encerrada' }}
+                    </span>
+                </p>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+        <hr *ngIf="sessoesAtivas.length > 0">
+
+    <!-- Sessões Encerradas -->
+    <div *ngIf="sessoesEncerradas.length > 0">
+        <h3 class="mt-4">Sessões Encerradas</h3>
+        <div class="row">
+        <div class="col-md-4" *ngFor="let s of sessoesEncerradas">
+            <div class="card mb-4">
+            <div class="card-header">
+                <strong>Pauta:</strong> {{ s.pauta?.titulo   }}
+            </div>
+            <div class="card-body">
+                <p><strong>Início:</strong> {{ formatarData(s.inicio) }}</p>
+                <p><strong>Fim:</strong> {{ formatarData(s.fim) }}</p>
+                <p><strong>Status:</strong> 
+                    <span [class]="s.ativa ? 'text-success fw-bold' : 'text-danger'">
+                        {{ s.ativa ? 'Ativa' : 'Encerrada' }}
+                    </span>
+                </p>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showModal" class="modal d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Nova Sessão de Votação</h5>
+            <button type="button" class="btn-close" (click)="fecharModal()"></button>
+        </div>
+        <div class="modal-body">
+            <form #formSessao="ngForm" (ngSubmit)="salvarSessao(formSessao)" novalidate>
+            <div class="mb-3">
+                <label class="form-label">Pauta</label>
+                <select class="form-select" required [(ngModel)]="pautaId" name="pautaId">
+                    <option [ngValue]="null" disabled selected>Selecione uma pauta</option>
+                    <option *ngFor="let pauta of pautas" [ngValue]="pauta.id">{{ pauta.titulo }}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Início</label>
+                <input type="datetime-local" class="form-control" name="inicio" [(ngModel)]="inicio" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Fim</label>
+                <input type="datetime-local" class="form-control" name="fim" [(ngModel)]="fim" />
+            </div>
+            <button class="btn btn-success" type="submit" [disabled]="formSessao.invalid">Salvar</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
