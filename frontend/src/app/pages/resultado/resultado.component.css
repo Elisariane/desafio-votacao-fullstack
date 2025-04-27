@@ -1,0 +1,25 @@
+.card {
+    border-radius: .5rem;
+}
+.btn-outline-primary {
+    transition: background .2s;
+}
+.btn-outline-primary:hover {
+    background: rgba(0,123,255,.1);
+}
+
+/* Barra de progresso personalizada */
+.progress {
+    height: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    transition: width 0.5s ease-in-out;
+    color: #fff;
+    text-align: center;
+    line-height: 30px; 
+}
+
