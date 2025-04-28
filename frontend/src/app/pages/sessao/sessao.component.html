@@ -20,22 +20,22 @@
 
         <!-- Sessões Ativas -->
     <div *ngIf="sessoesAtivas.length > 0">
-        <h3 class="mt-4">Sessões Ativas</h3>
+        <h3 class="mt-4">Sessões Ativas  ({{obterQuantidadeSessoesAtivas()}})</h3>
         <div class="row">
         <div class="col-md-4" *ngFor="let s of sessoesAtivas">
             <div class="card mb-4">
-            <div class="card-header">
-                <strong>Pauta:</strong> {{ s.pauta?.titulo }}
-            </div>
-            <div class="card-body">
-                <p><strong>Início:</strong> {{ formatarData(s.inicio) }}</p>
-                <p><strong>Fim:</strong> {{ formatarData(s.fim) }}</p>
-                <p><strong>Status:</strong> 
-                    <span [class]="s.ativa ? 'text-success fw-bold' : 'text-danger'">
-                        {{ s.ativa ? 'Ativa' : 'Encerrada' }}
-                    </span>
-                </p>
-            </div>
+                <div class="card-header">
+                    <strong>Pauta:</strong> {{ s.pauta?.titulo }}
+                </div>
+                <div class="card-body">
+                    <p><strong>Início:</strong> {{ formatarData(s.inicio) }}</p>
+                    <p><strong>Fim:</strong> {{ formatarData(s.fim) }}</p>
+                    <p><strong>Status:</strong> 
+                        <span [class]="s.ativa ? 'text-success fw-bold' : 'text-danger'">
+                            {{ s.ativa ? 'Ativa' : 'Encerrada' }}
+                        </span>
+                    </p>
+                </div>
             </div>
         </div>
         </div>
@@ -45,7 +45,7 @@
 
     <!-- Sessões Encerradas -->
     <div *ngIf="sessoesEncerradas.length > 0">
-        <h3 class="mt-4">Sessões Encerradas</h3>
+        <h3 class="mt-4">Sessões Encerradas ({{obterQuantidadeSessoesEncerradas()}})</h3>
         <div class="row">
         <div class="col-md-4" *ngFor="let s of sessoesEncerradas">
             <div class="card mb-4">

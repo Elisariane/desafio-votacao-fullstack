@@ -102,11 +102,31 @@ export class SessaoComponent implements OnInit {
   }
 
   get sessoesAtivas() {
-    return this.sessoes.filter(s => s.ativa);
+    return this.sessoes
+      .filter(s => s.ativa)
+      .sort((a, b) => {
+        const dateA = new Date(a.fim!).getTime();
+        const dateB = new Date(b.fim!).getTime();
+        return dateB - dateA;
+      });
   }
 
   get sessoesEncerradas() {
-    return this.sessoes.filter(s => !s.ativa);
+    return this.sessoes
+      .filter(s => !s.ativa)
+      .sort((a, b) => {
+        const dateA = new Date(a.fim!).getTime();
+        const dateB = new Date(b.fim!).getTime();
+        return dateB - dateA;
+      });
+  }
+
+  obterQuantidadeSessoesEncerradas() {
+    return this.sessoes.filter( s => !s.ativa).length;
+  }
+
+  obterQuantidadeSessoesAtivas() {
+    return this.sessoes.filter( s => s.ativa).length;
   }
 
 }
