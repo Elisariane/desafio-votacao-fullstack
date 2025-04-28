@@ -27,7 +27,7 @@
             </div>
             <div class="modal-body">
 
-                <div  *ngIf="resultado.totalSim != 0 && resultado.totalNao != 0">
+                <div  *ngIf="resultado.totalSim != 0 || resultado.totalNao != 0">
                     <p><strong>Votos SIM:</strong> {{ resultado.totalSim }}</p>
                     <p><strong>Votos NÃO:</strong> {{ resultado.totalNao }}</p>
                 </div>
@@ -61,7 +61,7 @@
                     </div>
                 </div>
 
-                <div *ngIf="resultado.totalSim != 0 && resultado.totalNao != 0">
+                <div *ngIf="resultado.totalSim != 0 || resultado.totalNao != 0">
                     <hr>
                     <p class="text-center fs-5"
                         [ngClass]="{
