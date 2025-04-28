@@ -2,7 +2,8 @@ package com.elisariane.votacao.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Entity
 public class SessaoVotacao {
@@ -15,24 +16,25 @@ public class SessaoVotacao {
     private Pauta pauta;
 
     @Column(nullable = false)
-    private LocalDateTime inicio;
+    private ZonedDateTime inicio;
 
     @Column(nullable = false)
-    private LocalDateTime fim;
+    private ZonedDateTime fim;
 
 
     public SessaoVotacao() {
     }
 
-    public SessaoVotacao(Pauta pauta, LocalDateTime inicio, LocalDateTime fim) {
+    public SessaoVotacao(Pauta pauta, ZonedDateTime inicio, ZonedDateTime fim) {
         this.pauta = pauta;
         this.inicio = inicio;
         this.fim = fim;
     }
 
     public boolean isAtiva() {
-        LocalDateTime localDateTimeAgora = LocalDateTime.now();
-        return localDateTimeAgora.isAfter(inicio) && localDateTimeAgora.isBefore(fim);
+        ZonedDateTime localDateTimeAgora = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
+        return localDateTimeAgora.isEqual(inicio) || localDateTimeAgora.isAfter(inicio)
+                && localDateTimeAgora.isBefore(fim);
     }
 
     public Long getId() {
@@ -51,19 +53,19 @@ public class SessaoVotacao {
         this.pauta = pauta;
     }
 
-    public LocalDateTime getInicio() {
+    public ZonedDateTime getInicio() {
         return inicio;
     }
 
-    public void setInicio(LocalDateTime inicio) {
+    public void setInicio(ZonedDateTime inicio) {
         this.inicio = inicio;
     }
 
-    public LocalDateTime getFim() {
+    public ZonedDateTime getFim() {
         return fim;
     }
 
-    public void setFim(LocalDateTime fim) {
+    public void setFim(ZonedDateTime fim) {
         this.fim = fim;
     }
 

@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,8 +46,8 @@ public class SessaoVotacaoService {
 
         LOGGER.info("Iniciando abertura de sessão para pauta ID {}", dto.pautaId());
 
-        LocalDateTime inicio = dto.inicio() != null ? dto.inicio() : LocalDateTime.now().minusSeconds(1);
-        LocalDateTime fim    = dto.fim()    != null ? dto.fim() : inicio.plusMinutes(1);
+        ZonedDateTime inicio = dto.inicio() != null ? dto.inicio() : ZonedDateTime.now().minusSeconds(1);
+        ZonedDateTime fim    = dto.fim()    != null ? dto.fim() : inicio.plusMinutes(1);
 
         SessaoVotacao sessao = new SessaoVotacao(pauta, inicio, fim);
 
