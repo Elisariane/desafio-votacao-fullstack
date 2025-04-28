@@ -1,59 +1,93 @@
-# Frontend
+# Sistema de Votação Cooperativa - Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+Este projeto é o frontend de uma aplicação de Votação para Cooperativas, construído com Angular 17, Bootstrap 5 e melhores práticas de desenvolvimento moderno.
 
-## Development server
+## 📋 Funcionalidades
 
-To start a local development server, run:
+- Cadastro de Pautas
 
-```bash
-ng serve
+- Cadastro de Associados
+
+- Abertura de Sessões de Votação
+
+- Registro de Votos
+
+- Apuração de Resultados
+
+- Mensagens dinâmicas de sucesso e erro
+
+- Interface responsiva e amigável
+
+## 🛠️ Tecnologias
+
+- Angular 17 (Standalone Components)
+
+- Bootstrap 5
+
+- TypeScript
+
+- HTML5 + CSS3
+
+- RxJS (Observables)
+
+- Ngx-Mask para máscaras de CPF
+
+- FontAwesome para ícones sociais (GitHub e LinkedIn)
+
+## 📁 Estrutura de Pastas
+
+```
+/src/app
+  ├── pages
+  │   ├── associado
+  │   ├── pauta
+  │   ├── sessao
+  │   ├── votacao
+  │   ├── resultado
+  ├── services
+  │   ├── associado.service.ts
+  │   ├── pauta.service.ts
+  │   ├── sessao.service.ts
+  │   ├── votacao.service.ts
+  │   ├── resultado.service.ts
+  ├── shared
+  │   ├── alert (component de alerta global)
+  │   ├── pipes (pipe para formatação de CPF)
+  ├── interfaces
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🚀 Como Rodar o Frontend
 
-## Code scaffolding
+- Instale as dependências:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+``` shell
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Rode o projeto localmente:
 
-```bash
-ng generate --help
+```shell
+npm start
 ```
 
-## Building
+- Acesse:
 
-To build the project run:
+    http://localhost:4200
 
-```bash
-ng build
-```
+⚠️ Importante: O backend deve estar rodando na porta 8080, conforme URLs configuradas nos serviços (http://localhost:8080).
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🔥 Diferenciais de UX/UI
 
-## Running unit tests
+- Alertas posicionados no canto superior direito.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- Feedback visual nos botões "Sim" e "Não" ao votar.
 
-```bash
-ng test
-```
+- Modal de resultados com barras de progresso indicando percentual de votos.
 
-## Running end-to-end tests
+- Mensagens amigáveis em todas as páginas.
 
-For end-to-end (e2e) testing, run:
+- Footer fixo com link para GitHub e LinkedIn.
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+##### 👩‍💻 Desenvolvido por Feito com ☕ e ❤️ por Elisariane Barbosa
